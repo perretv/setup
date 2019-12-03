@@ -3,9 +3,10 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     mkdir -p ~/.config/matplotlibrc
     cp matplotlibrc ~/.config/matplotlibrc/
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    brew  install git curl
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     mkdir ~/.matplotlib
     cp matplotlibrc ~/.matplotlib
+fi
 cp vimrc ~/.vimrc
 cp zshrc ~/.zshrc
 cp condarc ~/.condarc
@@ -23,3 +24,4 @@ cd fonts
 ./install.sh
 cd ..
 rm -rf fonts
+
