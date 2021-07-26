@@ -1,11 +1,17 @@
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt install zsh git curl
     mkdir -p ~/.config/matplotlibrc
     cp matplotlibrc ~/.config/matplotlibrc/
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -b
+    rm Miniconda3-latest-Linux-x86_64.sh
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     mkdir ~/.matplotlib
     cp matplotlibrc ~/.matplotlib
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+    bash Miniconda3-latest-MacOSX-x86_64.sh -b
+    rm Miniconda3-latest-MacOSX-x86_64.sh
 fi
 cp vimrc ~/.vimrc
 cp zshrc ~/.zshrc
