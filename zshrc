@@ -38,6 +38,7 @@ alias h='history'
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export PATH=$HOME/miniconda3/bin:$PATH
+export PATH="/Users/vperret/.local/bin:$PATH"
 # CUDA environment variables
 # export PATH=/usr/local/cuda/bin:$PATH
 # export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH

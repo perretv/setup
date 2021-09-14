@@ -1,4 +1,8 @@
+#!/bin/bash
+
+# Install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install miniconda
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt install zsh git curl
     mkdir -p ~/.config/matplotlibrc
@@ -13,6 +17,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     bash Miniconda3-latest-MacOSX-x86_64.sh -b
     rm Miniconda3-latest-MacOSX-x86_64.sh
 fi
+# Copy config files
 cp vimrc ~/.vimrc
 cp zshrc ~/.zshrc
 cp condarc ~/.condarc
@@ -30,4 +35,5 @@ cd fonts
 ./install.sh
 cd ..
 rm -rf fonts
-
+# Install poetry
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
