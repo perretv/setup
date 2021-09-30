@@ -2,6 +2,8 @@
 
 # Install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install starship shell
+brew install htop wget starship
 # Install miniconda
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     sudo apt install zsh git curl
@@ -28,7 +30,7 @@ mkdir .antigen
 curl -L git.io/antigen > .antigen/antigen.zsh
 # Install Vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PlugInstall +qall
+vim +PlugInstall +qall >/dev/null 2>&1
 # Install powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
 cd fonts
