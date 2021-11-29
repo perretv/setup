@@ -1,41 +1,51 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# Install starship shell
-brew install htop wget starship
-# Install miniconda
+
+# Install starship shell & utilities
+brew install htop wget curl zsh starship
+
+# OS specific commands
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    export OSNAME="Linux"
     sudo apt install zsh git curl
     mkdir -p ~/.config/matplotlibrc
     cp matplotlibrc ~/.config/matplotlibrc/
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash Miniconda3-latest-Linux-x86_64.sh -b
-    rm Miniconda3-latest-Linux-x86_64.sh
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+    export OSNAME="MacOSX"
+    xcode-select --install
     mkdir ~/.matplotlib
     cp matplotlibrc ~/.matplotlib
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
-    bash Miniconda3-latest-MacOSX-x86_64.sh -b
-    rm Miniconda3-latest-MacOSX-x86_64.sh
 fi
-# Copy config files
-cp vimrc ~/.vimrc
-cp zshrc ~/.zshrc
-cp condarc ~/.condarc
-mkdir ~/.vscode
-cd ~
+echo "OS name: ${OSNAME}"
+echo "CPU architecture: $CPUTYPE"
+
+# Install miniforge
+test -e ~/miniforge3 || {
+    export MINIFORGE_NAME="Miniforge3-${OSNAME}-${CPUTYPE}.sh";
+    wget "https://github.com/conda-forge/miniforge/releases/latest/download/${MINIFORGE_NAME}";
+    sh $MINIFORGE_NAME -b; rm $MINIFORGE_NAME;
+}
+
+# Install poetry
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+
+# Copy config files if non-existent
+test -e ~/.vimrc || cp vimrc ~/.vimrc
+test -e ~/.zshrc || cp zshrc ~/.zshrc
+
 # Install antigen
-mkdir .antigen
-curl -L git.io/antigen > .antigen/antigen.zsh
+test -d ~/.antigen || {
+    mkdir ~/.antigen;
+    curl -L git.io/antigen > ~/.antigen/antigen.zsh;
+}
+
 # Install Vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PlugInstall +qall >/dev/null 2>&1
+
 # Install powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
-cd fonts
-./install.sh
-cd ..
+./fonts/install.sh
 rm -rf fonts
-# Install poetry
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -

@@ -37,12 +37,8 @@ alias h='history'
 # ----------------
 export VISUAL=vim
 export EDITOR="$VISUAL"
-export PATH=$HOME/miniconda3/bin:$PATH
+export PATH=$HOME/miniforge3/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
-# CUDA environment variables
-# export PATH=/usr/local/cuda/bin:$PATH
-# export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-# export CUDA_HOME=$CUDA_HOME:/usr/local/cuda
-# Miniconda
+# Miniforge3
 # ----------------
-. $HOME/miniconda3/etc/profile.d/conda.sh
+. $HOME/miniforge3/etc/profile.d/conda.sh
