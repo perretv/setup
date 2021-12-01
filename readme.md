@@ -12,8 +12,7 @@ The `install.sh` script installs the following utilities:
     - 📊 `matplotlibrc`: a default configuration for the python `matplotlib` library
 
 
-To setup your environment:
+To setup your environment, simply run the `install.sh` script:
 ```
-chmod +x install.sh
-sh install.sh
+./install.sh
 ```
