@@ -54,3 +54,7 @@ vim +'PluginInstall --sync' +qa
 git clone https://github.com/powerline/fonts.git --depth=1
 ./fonts/install.sh
 rm -rf fonts
+
+# Set zsh as default shell
+command -v zsh | sudo tee -a /etc/shells
+chsh -s "$(command -v zsh)" "${USER}"
