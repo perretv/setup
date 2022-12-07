@@ -1,12 +1,3 @@
-# Install homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.profile
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zprofile
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# Install starship shell & utilities
-brew install curl git htop starship wget zsh
-
 # CPU architecture
 export CPUTYPE="$(uname -m)"
 
@@ -25,6 +16,17 @@ fi
 echo "OS name: ${OSNAME}"
 echo "CPU architecture: $CPUTYPE"
 
+# Install homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.profile
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zprofile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# Install starship shell & utilities
+brew install curl git htop starship wget zsh hstr
+
 # Install miniforge
 test -e $HOME/miniforge3 || {
     export MINIFORGE_NAME="Miniforge3-${OSNAME}-${CPUTYPE}.sh";
@@ -40,12 +42,6 @@ curl -sSL https://install.python-poetry.org | python3 - -p
 test -e ~/.vimrc || cp vimrc ~/.vimrc
 test -e ~/.zshrc || cp zshrc ~/.zshrc
 
-# Install antigen
-test -d ~/.antigen || {
-    mkdir ~/.antigen;
-    curl -L git.io/antigen > ~/.antigen/antigen.zsh;
-}
-
 # Install Vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +'PluginInstall --sync' +qa
@@ -58,3 +54,6 @@ rm -rf fonts
 # Set zsh as default shell
 command -v zsh | sudo tee -a /etc/shells
 chsh -s "$(command -v zsh)" "${USER}"
+
+# Initialize conda
+conda init zsh

@@ -1,25 +1,22 @@
-# Antigen zsh plugins
+# oh-my-zsh
 # ----------------
-source $HOME/.antigen/antigen.zsh
-antigen use oh-my-zsh
-antigen bundle colored-man-pages
-antigen bundle command-not-found
-antigen bundle esc/conda-zsh-completion
-antigen bundle git
-antigen bundle git-extras
-antigen bundle git-flow
-antigen bundle kubectl
-antigen bundle npm
-antigen bundle pip
-antigen bundle pep8
-antigen bundle pyenv
-antigen bundle python
-antigen bundle sudo
-antigen bundle systemd
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh_reload
-antigen apply
+export ZSH="$HOME/.oh-my-zsh"
+# oh-my-zsh plugins
+# ----------------
+plugins=(
+	brew
+	docker
+	git
+	macos
+	npm
+	pip
+	poetry
+	python
+	terraform
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+)
+source $ZSH/oh-my-zsh.sh
 # Starship shell
 # ----------------
 eval "$(starship init zsh)"
@@ -37,8 +34,4 @@ alias h='history'
 # ----------------
 export VISUAL=vim
 export EDITOR="$VISUAL"
-export PATH=$HOME/miniforge3/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
-# Miniforge3
-# ----------------
-. $HOME/miniforge3/etc/profile.d/conda.sh
