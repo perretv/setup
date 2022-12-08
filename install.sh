@@ -6,7 +6,7 @@ export CPUTYPE="$(uname -m)"
 # OS specific commands
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     export OSNAME="Linux"
-    sudo apt install zsh hstr
+    sudo apt install zsh
     mkdir -p ~/.config/matplotlibrc
     cp matplotlibrc ~/.config/matplotlibrc/
 elif [[ "$OSTYPE" == "darwin"* ]]; then
