@@ -27,6 +27,11 @@ fi
 # Install starship shell & utilities
 brew install curl git htop starship wget zsh hstr
 
+# Install oh-my-zsh & plugins
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
 # Install miniforge
 test -e $HOME/miniforge3 || {
     export MINIFORGE_NAME="Miniforge3-${OSNAME}-${CPUTYPE}.sh";
@@ -51,9 +56,8 @@ git clone https://github.com/powerline/fonts.git --depth=1
 ./fonts/install.sh
 rm -rf fonts
 
-# Set zsh as default shell
+# Add zsh to shells
 command -v zsh | sudo tee -a /etc/shells
-chsh -s "$(command -v zsh)" "${USER}"
 
 # Initialize conda
 conda init zsh
