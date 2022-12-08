@@ -1,9 +1,12 @@
+#!/bin/bash
+
 # CPU architecture
 export CPUTYPE="$(uname -m)"
 
 # OS specific commands
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     export OSNAME="Linux"
+    sudo apt install zsh hstr
     mkdir -p ~/.config/matplotlibrc
     cp matplotlibrc ~/.config/matplotlibrc/
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -11,21 +14,15 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     xcode-select --install
     mkdir ~/.matplotlib
     cp matplotlibrc ~/.matplotlib
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew install curl git htop wget hstr
 fi
 
 echo "OS name: ${OSNAME}"
 echo "CPU architecture: $CPUTYPE"
 
-# Install homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.profile
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zprofile
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
-
-# Install starship shell & utilities
-brew install curl git htop starship wget zsh hstr
+# Install starship shell
+curl -sS https://starship.rs/install.sh | sh
 
 # Install oh-my-zsh & plugins
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -46,10 +43,10 @@ curl -sSL https://install.python-poetry.org | python3 - -p
 # Copy config files if non-existent
 test -e ~/.vimrc || cp vimrc ~/.vimrc
 test -e ~/.zshrc || cp zshrc ~/.zshrc
+test -e ~/.condarc || cp condarc ~/.condarc
 
 # Install Vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +'PluginInstall --sync' +qa
 
 # Install powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
