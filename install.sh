@@ -3,9 +3,6 @@
 # CPU architecture
 export CPUTYPE="$(uname -m)"
 
-# Install homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 # OS specific commands
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     export OSNAME="Linux"
@@ -13,6 +10,9 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     mkdir -p ~/.config/matplotlibrc
     cp matplotlibrc ~/.config/matplotlibrc/
     # Homebrew config
+    sudo mkdir -p /home/linuxbrew
+    sudo chown "$(whoami)" /home/linuxbrew
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> $HOME/.profile
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     # Instal GitHub CLI
@@ -27,6 +27,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     xcode-select --install
     mkdir ~/.matplotlib
     cp matplotlibrc ~/.matplotlib
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew install curl git htop wget hstr gh
 fi
 
@@ -34,20 +35,22 @@ echo "OS name: ${OSNAME}"
 echo "CPU architecture: $CPUTYPE"
 
 # Install starship shell
-curl -sS https://starship.rs/install.sh | sh
+curl -sS -o install_starship.sh https://starship.rs/install.sh
+sudo sh install_starship.sh
+
 
 # Install oh-my-zsh & plugins
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-# Install miniforge
-test -e $HOME/miniforge3 || {
-    export MINIFORGE_NAME="Miniforge3-${OSNAME}-${CPUTYPE}.sh";
-    wget "https://github.com/conda-forge/miniforge/releases/latest/download/${MINIFORGE_NAME}";
-    sh $MINIFORGE_NAME -b; rm $MINIFORGE_NAME;
+# Install miniconda
+test -e $HOME/miniconda3 || {
+    export MINICONDA_NAME="Miniconda3-latest-${OSNAME}-${CPUTYPE}.sh";
+    wget "https://repo.anaconda.com/miniconda/${MINICONDA_NAME}";
+    sh $MINICONDA_NAME -b; rm $MINICONDA_NAME;
 }
-export PATH=$HOME/miniforge3/bin:$PATH
+export PATH=$HOME/miniconda3/bin:$PATH
 
 # Login to GitHub
 gh auth login
