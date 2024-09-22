@@ -65,13 +65,6 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 export PATH="$HOME/.local/bin:$PATH"
 
-# Conda initialization
-# --------------------
-if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-    . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    export PATH="$HOME/miniconda3/bin:$PATH"
-fi
-
 # Load fzf if installed
 # ---------------------
 if [ -f "$HOME/.fzf.zsh" ]; then
