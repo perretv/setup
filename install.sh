@@ -130,7 +130,7 @@ if [ "$OSNAME" = "Linux" ]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         set -e  # Re-enable 'set -e'
         # Configure Homebrew
-        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.zprofile
+        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zshrc
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     else
         echo "Homebrew is already installed."
