@@ -237,29 +237,56 @@ fi
 
 # Login to GitHub
 if ! gh auth status >/dev/null 2>&1; then
+    echo "Starting GitHub CLI authentication..."
+    # 'gh auth login' can return a non‑zero exit status (for example when it
+    # launches a browser for web‑based login).  Because we enabled 'set -e' at
+    # the top of the script, any non‑zero status would abort the rest of the
+    # setup.  Temporarily disable 'exit on error' so the script always
+    # continues after authentication.
+    set +e
     gh auth login
+    GHAUTH_RC=$?
+    set -e
+    if [ "$GHAUTH_RC" -ne 0 ]; then
+        echo "⚠️  gh auth login returned exit code $GHAUTH_RC – continuing execution."
+    fi
 else
     echo "Already logged in to GitHub CLI."
 fi
 
+echo "Setting up Git user information..."
 # Setup Git
-GIT_USERNAME="$(git config --global user.name)"
-GIT_USEREMAIL="$(git config --global user.email)"
+# Safely query existing Git config values without letting a non‑zero exit
+# status abort the script (because we are running with `set -e`).
+GIT_USERNAME="$(git config --global --get user.name 2>/dev/null || true)"
+GIT_USEREMAIL="$(git config --global --get user.email 2>/dev/null || true)"
 if [ -z "$GIT_USERNAME" ]; then
-    read -p "Enter your Git user.name: " GIT_USERNAME
-    git config --global user.name "$GIT_USERNAME"
+    if [ -t 0 ]; then
+        read -p "Enter your Git user.name: " GIT_USERNAME
+        git config --global user.name "$GIT_USERNAME"
+    else
+        echo "Git user.name is not set and no interactive TTY is available – skipping."
+    fi
 else
     echo "Git user.name is already set to $GIT_USERNAME"
 fi
+echo "Setting up Git user.email..."
 if [ -z "$GIT_USEREMAIL" ]; then
-    read -p "Enter your Git user.email: " GIT_USEREMAIL
-    git config --global user.email "$GIT_USEREMAIL"
+    if [ -t 0 ]; then
+        read -p "Enter your Git user.email: " GIT_USEREMAIL
+        git config --global user.email "$GIT_USEREMAIL"
+    else
+        echo "Git user.email is not set and no interactive TTY is available – skipping."
+    fi
 else
     echo "Git user.email is already set to $GIT_USEREMAIL"
 fi
 
 # Set push.default to current if not already set
-GIT_PUSH_DEFAULT="$(git config --global push.default)"
+echo "Setting up Git push.default..."
+# Safely query existing Git push.default without letting a missing value
+# abort the script (because we are running with `set -e`).
+GIT_PUSH_DEFAULT="$(git config --global --get push.default 2>/dev/null || true)"
 if [ "$GIT_PUSH_DEFAULT" != "current" ]; then
     git config --global push.default current
     echo "Git push.default set to 'current'."
@@ -268,6 +295,7 @@ else
 fi
 
 # Install Poetry
+echo "Installing Poetry..."
 if ! command -v poetry >/dev/null; then
     echo "Installing Poetry..."
     curl -sSL https://install.python-poetry.org | python3 -
